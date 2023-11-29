@@ -27,6 +27,7 @@ def get_json_data(id_str):
                 print (f"return conf: {file_path}")
 
                 thread_reduce_count.start()
+                thread_add_one_try.start()
 
                 return file_contents
             
