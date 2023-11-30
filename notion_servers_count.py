@@ -65,7 +65,7 @@ def reduce_count(page):
     while True:
         res = requests.patch(url, json=payload, headers=headers)
         print ("Notion: ReduceValue:", res)
-        if res == "<Response [200]>":
+        if res.status_code == 200:
             break
 
 def add_one_try(page):
