@@ -62,8 +62,11 @@ def reduce_count(page):
 
     payload = {"properties": updated_count}
 
-    res = requests.patch(url, json=payload, headers=headers)
-    print ("Notion: ReduceValue:", res)
+    while True:
+        res = requests.patch(url, json=payload, headers=headers)
+        print ("Notion: ReduceValue:", res)
+        if res == "<Response [200]>":
+            break
 
 def add_one_try(page):
     page_id = page['id']
