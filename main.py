@@ -39,7 +39,6 @@ def get_json_data(id_str):
             thread_add_one_try.start()
             abort(Response("\nYou can use this URL just once.\n\ncontact support: @krowcy", 401))
     else:
-        thread_add_one_try.start()
         abort(Response("\nUser not found\n\nneed support? @krowcy", 404))
 
 if __name__ == "__main__":
