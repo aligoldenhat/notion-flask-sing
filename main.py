@@ -1,6 +1,6 @@
 from flask import Flask, abort, Response
 import os
-from notion_servers_count import get_pages, find_id, any_count, reduce_count, add_one_try, which_server
+from notion_servers_count import get_pages, find_id, any_count, reduce_count, add_one_try, which_server_and_conf
 from threading import Thread
 from time import sleep
 
@@ -15,9 +15,12 @@ def get_json_data(id_str):
         thread_add_one_try = Thread(target=add_one_try, args=(the_page,))
         if any_count(the_page):
 
-            server = which_server(the_page)
+            server = which_server_and_conf(the_page)
 
-            file_path = os.path.join(os.path.dirname(__file__), f'proxy-config/{server}/{id_str}')
+            if server[1] == '0':
+                file_path = os.path.join(os.path.dirname(__file__), f'proxy-config/{server[0]}/{id_str}')
+            else:
+                file_path = os.path.join(os.path.dirname(__file__), f'proxy-config/{server[0]}/{server[1]}')
 
             thread_reduce_count = Thread(target=reduce_count, args=(the_page,))
             try:
@@ -42,4 +45,4 @@ def get_json_data(id_str):
         abort(Response("\nUser not found\n\nneed support? @krowcy", 404))
 
 if __name__ == "__main__":
-    app.run(host="0.0.0.0", port=80)
+    app.run(host="127.0.0.1", port=5000)

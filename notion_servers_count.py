@@ -40,9 +40,9 @@ def find_id(id, pages):
         except IndexError:
             pass
 
-def which_server(page):
+def which_server_and_conf(page):
     if page:
-        return page['properties']['server']['select']['name']
+        return page['properties']['server']['select']['name'], page['properties']['conf']['select']['name']
 
 def any_count(page):
     try:
@@ -79,4 +79,3 @@ def add_one_try(page):
 
     res = requests.patch(url, json=payload, headers=headers)
     print ("Notion: OneMoreTry:", res)
-
