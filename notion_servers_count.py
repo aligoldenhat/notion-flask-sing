@@ -1,5 +1,6 @@
 import requests
 import json, os
+from datetime import datetime
 
 
 file_path = os.path.join(os.path.dirname(__file__), f'info.json')
@@ -40,9 +41,9 @@ def find_id(id, pages):
         except IndexError:
             pass
 
-def which_server_and_conf(page):
+def which_conf(page):
     if page:
-        return page['properties']['server']['select']['name'], page['properties']['conf']['select']['name']
+        return page['properties']['conf']['select']['name']
 
 def any_count(page):
     try:
@@ -68,14 +69,21 @@ def reduce_count(page):
         if res.status_code == 200:
             break
 
-def add_one_try(page):
+def add_try_date(page, succ):
     page_id = page['id']
     url = f"https://api.notion.com/v1/pages/{page_id}"
 
-    one_more_try = page['properties']['try']['number'] + 1
-    updated_count = {'try': {'number': one_more_try}}
+    now = datetime.today().strftime('%Y-%m-%dT%H:%M:%S.000+03:30')
 
+    if succ:
+        updated_count = {'succ_try': {'date': {'start': now}}}
+    else:
+        updated_count = {'latest_try': {'date': {'start': now}}}
     payload = {"properties": updated_count}
 
-    res = requests.patch(url, json=payload, headers=headers)
-    print ("Notion: OneMoreTry:", res)
+    while True:
+        res = requests.patch(url, json=payload, headers=headers)
+        print ("Notion: OneMoreTry:", res)
+        if res.status_code == 200:
+            break
+
