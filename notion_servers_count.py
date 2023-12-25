@@ -83,7 +83,7 @@ def add_try_date(page, succ):
 
     while True:
         res = requests.patch(url, json=payload, headers=headers)
-        print ("Notion: OneMoreTry:", res)
+        print ("Notion: UpdateTryDate:", res)
         if res.status_code == 200:
             break
 
