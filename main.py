@@ -47,5 +47,5 @@ def get_json_data(id_str):
 
 if __name__ == "__main__":
     logging.basicConfig(level = logging.INFO,
-                        format = '%(threadName)s: %(message)s')
+                        format = '%(message)s')
     app.run(host="0.0.0.0", port=80)
