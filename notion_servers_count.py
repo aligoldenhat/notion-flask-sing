@@ -1,5 +1,5 @@
 import requests
-import json, os
+import json, os, logging
 from datetime import datetime
 
 
@@ -65,7 +65,7 @@ def reduce_count(page):
 
     while True:
         res = requests.patch(url, json=payload, headers=headers)
-        print ("Notion: ReduceValue:", res)
+        logging.info(f"Notion: ReduceValue: {res}")
         if res.status_code == 200:
             break
 
@@ -83,7 +83,7 @@ def add_try_date(page, succ):
 
     while True:
         res = requests.patch(url, json=payload, headers=headers)
-        print ("Notion: UpdateTryDate:", res)
+        logging.info(f"Notion: UpdateTryDate: {res}")
         if res.status_code == 200:
             break
 

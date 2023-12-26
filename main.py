@@ -2,7 +2,7 @@ from flask import Flask, abort, Response
 import os
 from notion_servers_count import get_pages, find_id, any_count, reduce_count, add_try_date, which_conf
 from threading import Thread
-from time import sleep
+import logging
 
 app = Flask(__name__)
 
@@ -27,7 +27,7 @@ def get_json_data(id_str):
                 with open(file_path, 'r') as file:
                     file_contents = file.read()
 
-                print (f"return conf: {file_path}")
+                logging.info(f"return conf: {file_path}")
 
                 thread_reduce_count.start()
                 thread_add_try_date.start()
@@ -35,7 +35,7 @@ def get_json_data(id_str):
                 return file_contents
             
             except FileNotFoundError as fnf_error:
-                print (fnf_error)
+                logging.info(fnf_error)
                 thread_add_try_date.start()
                 abort(Response("FileNotFound\n\ncontanct support: @krowcy", 406))
         else:
@@ -46,4 +46,6 @@ def get_json_data(id_str):
         abort(Response("\nUser not found\n\nneed support? @krowcy", 404))
 
 if __name__ == "__main__":
-    app.run(host="0.0.0.0", port=80)
+    logging.basicConfig(level = logging.INFO,
+                        format = '%(threadName)s: %(message)s')
+    app.run(host="127.0.0.1", port=5000)
