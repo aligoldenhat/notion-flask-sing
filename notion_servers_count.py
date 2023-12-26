@@ -62,7 +62,6 @@ def reduce_and_try_date(page, succ, id):
     now = datetime.today().strftime('%Y-%m-%dT%H:%M:%S.000+03:30')
 
     if succ:
-        reduce_message = "Reduce"
         reduced_count = page['properties']['count']['number'] - 1
         updated_count = {'latest_try': {'date': {'start': now}}, 'succ_try': {'checkbox': True}, 'count': {'number': reduced_count}}
     else:
