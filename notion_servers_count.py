@@ -72,6 +72,7 @@ def reduce_and_try_date(page, succ):
     count_patch_request = 0
     while True:
         count_patch_request += 1
+        print ("trying")
         res = requests.patch(url, json=payload, headers=headers)
         if res.status_code == 200:
             break
