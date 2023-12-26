@@ -76,5 +76,5 @@ def reduce_and_try_date(page, succ, id):
         if res.status_code == 200:
             break
     
-    logging.info(f"Notion: {res} - Reduce: {succ} - TryDate: {True} - CountRequests: {count_patch_request} - ID: {id}")
+    logging.info(f"NotionID: {id} {res} - Reduce: {succ} - TryDate: {True} - CountRequests: {count_patch_request}")
 
