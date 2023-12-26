@@ -27,7 +27,7 @@ def get_json_data(id_str):
 
                 logging.info(f"return conf: {file_path}")
 
-                thread_add_try_date = Thread(target=reduce_and_try_date, args=(the_page, True))
+                thread_add_try_date = Thread(target=reduce_and_try_date, args=(the_page, True, id_str))
                 thread_add_try_date.start()
 
                 return file_contents
@@ -35,14 +35,14 @@ def get_json_data(id_str):
             except FileNotFoundError as fnf_error:
                 logging.info(fnf_error)
 
-                thread_add_try_date = Thread(target=reduce_and_try_date, args=(the_page, False))
+                thread_add_try_date = Thread(target=reduce_and_try_date, args=(the_page, False, id_str))
                 thread_add_try_date.start()
 
                 abort(Response("FileNotFound\n\ncontanct support: @krowcy", 406))
         else:
-            thread_add_try_date = Thread(target=reduce_and_try_date, args=(the_page, False))
+            thread_add_try_date = Thread(target=reduce_and_try_date, args=(the_page, False, id_str))
             thread_add_try_date.start()
-            
+
             abort(Response("\nYou can use this URL just once.\n\ncontact support: @krowcy", 401))
     else:
         abort(Response("\nUser not found\n\nneed support? @krowcy", 404))
