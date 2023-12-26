@@ -76,9 +76,9 @@ def add_try_date(page, succ):
     now = datetime.today().strftime('%Y-%m-%dT%H:%M:%S.000+03:30')
 
     if succ:
-        updated_count = {'succ_try': {'date': {'start': now}}}
+        updated_count = {'latest_try': {'date': {'start': now}}, 'succ_try': {'checkbox': True}}
     else:
-        updated_count = {'latest_try': {'date': {'start': now}}}
+        updated_count = {'latest_try': {'date': {'start': now}}, 'succ_try': {'checkbox': False}}
     payload = {"properties": updated_count}
 
     while True:
