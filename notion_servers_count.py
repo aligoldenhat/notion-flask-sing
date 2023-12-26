@@ -62,15 +62,19 @@ def reduce_and_try_date(page, succ):
     now = datetime.today().strftime('%Y-%m-%dT%H:%M:%S.000+03:30')
 
     if succ:
+        reduce_message = "Reduce"
         reduced_count = page['properties']['count']['number'] - 1
         updated_count = {'latest_try': {'date': {'start': now}}, 'succ_try': {'checkbox': True}, 'count': {'number': reduced_count}}
     else:
         updated_count = {'latest_try': {'date': {'start': now}}, 'succ_try': {'checkbox': False}}
     payload = {"properties": updated_count}
 
+    count_patch_request = 0
     while True:
+        count_patch_request += 1
         res = requests.patch(url, json=payload, headers=headers)
-        logging.info(f"Notion: UpdateTryDate: {res}")
         if res.status_code == 200:
             break
+    
+    logging.info(f"Notion: UpdateDate: {res} - CountRequests: {count_patch_request} - Reduce: {succ}")
 
