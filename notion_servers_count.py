@@ -54,29 +54,16 @@ def any_count(page):
     except TypeError:
         return False
     
-def reduce_count(page):
-    page_id = page['id']
-    url = f"https://api.notion.com/v1/pages/{page_id}"
 
-    reduced_count = page['properties']['count']['number'] - 1
-    updated_count = {'count': {'number': reduced_count}}
-
-    payload = {"properties": updated_count}
-
-    while True:
-        res = requests.patch(url, json=payload, headers=headers)
-        logging.info(f"Notion: ReduceValue: {res}")
-        if res.status_code == 200:
-            break
-
-def add_try_date(page, succ):
+def reduce_and_try_date(page, succ):
     page_id = page['id']
     url = f"https://api.notion.com/v1/pages/{page_id}"
 
     now = datetime.today().strftime('%Y-%m-%dT%H:%M:%S.000+03:30')
 
     if succ:
-        updated_count = {'latest_try': {'date': {'start': now}}, 'succ_try': {'checkbox': True}}
+        reduced_count = page['properties']['count']['number'] - 1
+        updated_count = {'latest_try': {'date': {'start': now}}, 'succ_try': {'checkbox': True}, 'count': {'number': reduced_count}}
     else:
         updated_count = {'latest_try': {'date': {'start': now}}, 'succ_try': {'checkbox': False}}
     payload = {"properties": updated_count}
