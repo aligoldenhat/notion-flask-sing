@@ -17,17 +17,17 @@ def get_json_data(id_str):
             conf = which_conf(the_page)
 
             if conf == 'private':
-                file_path = os.path.join(os.path.dirname(__file__), f'proxy-config/private/{id_str}')
+                conf = f"/private/{id_str}"
+                file_path = os.path.join(os.path.dirname(__file__), f'proxy-config{id_str}')
             else:
-                file_path = os.path.join(os.path.dirname(__file__), f'proxy-config/public/{conf}')
+                conf = f"/public/{conf}"
+                file_path = os.path.join(os.path.dirname(__file__), f'proxy-config{conf}')
 
             try:
                 with open(file_path, 'r') as file:
                     file_contents = file.read()
 
-                logging.info(f"return conf: {file_path}")
-
-                thread_add_try_date = Thread(target=reduce_and_try_date, args=(the_page, True, id_str))
+                thread_add_try_date = Thread(target=reduce_and_try_date, args=(the_page, True, id_str, conf))
                 thread_add_try_date.start()
 
                 return file_contents
@@ -35,12 +35,12 @@ def get_json_data(id_str):
             except FileNotFoundError as fnf_error:
                 logging.info(fnf_error)
 
-                thread_add_try_date = Thread(target=reduce_and_try_date, args=(the_page, False, id_str))
+                thread_add_try_date = Thread(target=reduce_and_try_date, args=(the_page, False, id_str, conf))
                 thread_add_try_date.start()
 
                 abort(Response("FileNotFound\n\ncontanct support: @krowcy", 406))
         else:
-            thread_add_try_date = Thread(target=reduce_and_try_date, args=(the_page, False, id_str))
+            thread_add_try_date = Thread(target=reduce_and_try_date, args=(the_page, False, id_str, None))
             thread_add_try_date.start()
 
             abort(Response("\nYou can use this URL just once.\n\ncontact support: @krowcy", 401))

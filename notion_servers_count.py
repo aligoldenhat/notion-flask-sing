@@ -55,7 +55,7 @@ def any_count(page):
         return False
     
 
-def reduce_and_try_date(page, succ, id):
+def reduce_and_try_date(page, succ, id, conf):
     page_id = page['id']
     url = f"https://api.notion.com/v1/pages/{page_id}"
 
@@ -72,8 +72,8 @@ def reduce_and_try_date(page, succ, id):
     while True:
         count_patch_request += 1
         res = requests.patch(url, json=payload, headers=headers)
-        if res.status_code == 200:
+        if res.status_code == 200 or count_patch_request == 10:
             break
     
-    logging.info(f"NotionID: {id} {res} - Reduce: {succ} - TryDate: {True} - CountRequests: {count_patch_request}")
+    logging.info(f"NotionID: {id} {conf} {res} - Reduce: {succ} - TryDate: {True} - CountRequests: {count_patch_request}")
 
