@@ -18,7 +18,7 @@ def get_json_data(id_str):
 
             if conf == 'private':
                 conf = f"/private/{id_str}"
-                file_path = os.path.join(os.path.dirname(__file__), f'proxy-config{id_str}')
+                file_path = os.path.join(os.path.dirname(__file__), f'proxy-config{conf}')
             else:
                 conf = f"/public/{conf}"
                 file_path = os.path.join(os.path.dirname(__file__), f'proxy-config{conf}')
