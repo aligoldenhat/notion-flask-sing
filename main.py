@@ -19,16 +19,16 @@ def get_json_data(id_str):
             if path == 'private':
                 path = f"/private/{id_str}"
             else:
-                path = f"/public/{conf}"
+                path = f"/public/{path}"
             conf = get_config_from_github(path)
-            
+
             if not conf == "Not Found":
-                thread_add_try_date = Thread(target=reduce_and_try_date, args=(the_page, True, id_str, conf))
+                thread_add_try_date = Thread(target=reduce_and_try_date, args=(the_page, True, id_str, path))
                 thread_add_try_date.start()
 
                 return conf
             else:
-                thread_add_try_date = Thread(target=reduce_and_try_date, args=(the_page, False, id_str, conf))
+                thread_add_try_date = Thread(target=reduce_and_try_date, args=(the_page, False, id_str, path))
                 thread_add_try_date.start()
 
                 abort(Response("FileNotFound\n\ncontanct support: @krowcy", 406))
