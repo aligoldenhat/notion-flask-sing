@@ -7,8 +7,8 @@ file_path = os.path.join(os.path.dirname(__file__), f'info.json')
 with open(file_path, 'r') as f:
     data = json.load(f)
 
-NOTION_TOKEN = data['notion_token']
-DATABASE_ID = data['database_id']
+NOTION_TOKEN = data["notion_api"]["notion_token"]
+DATABASE_ID = data["notion_api"]["database_id"]
 
 headers = {
     "Authorization": "Bearer " + NOTION_TOKEN,

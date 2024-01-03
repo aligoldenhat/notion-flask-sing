@@ -1,6 +1,6 @@
 from flask import Flask, abort, Response
-import os
 from notion_servers_count import get_pages, find_id, any_count, reduce_and_try_date, which_conf
+from github_prox import get_config_from_github
 from threading import Thread
 import logging
 
@@ -14,27 +14,20 @@ def get_json_data(id_str):
     if the_page:
         if any_count(the_page):
 
-            conf = which_conf(the_page)
+            path = which_conf(the_page)
 
-            if conf == 'private':
-                conf = f"/private/{id_str}"
-                file_path = os.path.join(os.path.dirname(__file__), f'proxy-config{conf}')
+            if path == 'private':
+                path = f"/private/{id_str}"
             else:
-                conf = f"/public/{conf}"
-                file_path = os.path.join(os.path.dirname(__file__), f'proxy-config{conf}')
-
-            try:
-                with open(file_path, 'r') as file:
-                    file_contents = file.read()
-
+                path = f"/public/{conf}"
+            conf = get_config_from_github(path)
+            
+            if not conf == "Not Found":
                 thread_add_try_date = Thread(target=reduce_and_try_date, args=(the_page, True, id_str, conf))
                 thread_add_try_date.start()
 
-                return file_contents
-            
-            except FileNotFoundError as fnf_error:
-                logging.info(fnf_error)
-
+                return conf
+            else:
                 thread_add_try_date = Thread(target=reduce_and_try_date, args=(the_page, False, id_str, conf))
                 thread_add_try_date.start()
 
