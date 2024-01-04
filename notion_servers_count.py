@@ -57,19 +57,35 @@ def any_count(page):
 
 def reduce_and_try_date(page, succ, id, conf):
     page_id = page['id']
-    previous_succ_try = page["properties"]["latest_try"]["date"]["start"]
     url = f"https://api.notion.com/v1/pages/{page_id}"
 
-    now = datetime.today()
-    previous_datetime_object = datetime.strptime(previous_succ_try, '%Y-%m-%dT%H:%M:%S.000+03:30')
-    difference = str(now - previous_datetime_object).split(".")[0]
+    try:
+        previous_succ_try = page["properties"]["latest_try"]["date"]["start"]
+        add_difference = True
 
-    now = now.strftime('%Y-%m-%dT%H:%M:%S.000+03:30')
-    if succ:
-        reduced_count = page['properties']['count']['number'] - 1
-        updated_count = {'latest_try': {'date': {'start': now}}, 'succ_try': {'checkbox': True}, 'time_difference': {'rich_text': [{'text': {'content': difference}}]}, 'count': {'number': reduced_count}}
+        now = datetime.today()
+        previous_datetime_object = datetime.strptime(previous_succ_try, '%Y-%m-%dT%H:%M:%S.000+03:30')
+        difference = str(now - previous_datetime_object).split(".")[0]
+        now = now.strftime('%Y-%m-%dT%H:%M:%S.000+03:30')
+
+    except TypeError:
+        add_difference = False
+        now = datetime.today().strftime('%Y-%m-%dT%H:%M:%S.000+03:30')
+
+
+    if add_difference:
+        if succ:
+            reduced_count = page['properties']['count']['number'] - 1
+            updated_count = {'latest_try': {'date': {'start': now}}, 'succ_try': {'checkbox': True}, 'time_difference': {'rich_text': [{'text': {'content': difference}}]}, 'count': {'number': reduced_count}}
+        else:
+            updated_count = {'latest_try': {'date': {'start': now}}, 'time_difference': {'rich_text': [{'text': {'content': difference}}]}, 'succ_try': {'checkbox': False}}
     else:
-        updated_count = {'latest_try': {'date': {'start': now}}, 'time_difference': {'rich_text': [{'text': {'content': difference}}]}, 'succ_try': {'checkbox': False}}
+        if succ:
+            reduced_count = page['properties']['count']['number'] - 1
+            updated_count = {'latest_try': {'date': {'start': now}}, 'succ_try': {'checkbox': True}, 'count': {'number': reduced_count}}
+        else:
+            updated_count = {'latest_try': {'date': {'start': now}}, 'succ_try': {'checkbox': False}}
+
     payload = {"properties": updated_count}
 
     count_patch_request = 0
