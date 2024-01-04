@@ -57,15 +57,20 @@ def any_count(page):
 
 def reduce_and_try_date(page, succ, id, conf):
     page_id = page['id']
+    previous_succ_try = page["properties"]["latest_try"]["date"]["start"]
+    print (previous_succ_try)
     url = f"https://api.notion.com/v1/pages/{page_id}"
 
-    now = datetime.today().strftime('%Y-%m-%dT%H:%M:%S.000+03:30')
+    now = datetime.today()
+    previous_datetime_object = datetime.strptime(previous_succ_try, '%Y-%m-%dT%H:%M:%S.000+03:30')
+    difference = str(now - previous_datetime_object).split(".")[0]
 
+    now = now.strftime('%Y-%m-%dT%H:%M:%S.000+03:30')
     if succ:
         reduced_count = page['properties']['count']['number'] - 1
-        updated_count = {'latest_try': {'date': {'start': now}}, 'succ_try': {'checkbox': True}, 'count': {'number': reduced_count}}
+        updated_count = {'latest_try': {'date': {'start': now}}, 'succ_try': {'checkbox': True}, 'time_difference': {'rich_text': [{'text': {'content': difference}}]}, 'count': {'number': reduced_count}}
     else:
-        updated_count = {'latest_try': {'date': {'start': now}}, 'succ_try': {'checkbox': False}}
+        updated_count = {'latest_try': {'date': {'start': now}}, 'time_difference': {'rich_text': [{'text': {'content': difference}}]}, 'succ_try': {'checkbox': False}}
     payload = {"properties": updated_count}
 
     count_patch_request = 0
@@ -77,3 +82,4 @@ def reduce_and_try_date(page, succ, id, conf):
     
     logging.info(f"NotionID: {id} {conf} {res} - Reduce: {succ} - TryDate: {True} - CountRequests: {count_patch_request}")
 
+print (find_id("test-t1", get_pages()))
