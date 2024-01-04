@@ -58,7 +58,6 @@ def any_count(page):
 def reduce_and_try_date(page, succ, id, conf):
     page_id = page['id']
     previous_succ_try = page["properties"]["latest_try"]["date"]["start"]
-    print (previous_succ_try)
     url = f"https://api.notion.com/v1/pages/{page_id}"
 
     now = datetime.today()
