@@ -81,5 +81,3 @@ def reduce_and_try_date(page, succ, id, conf):
             break
     
     logging.info(f"NotionID: {id} {conf} {res} - Reduce: {succ} - TryDate: {True} - CountRequests: {count_patch_request}")
-
-print (find_id("test-t1", get_pages()))
