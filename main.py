@@ -38,7 +38,7 @@ def get_json_data(id_str):
 
             abort(Response("\nYou can use this URL just once.\n\ncontact support: @krowcy", 401))
     else:
-        abort(Response("\nUser not found\n\nneed support? @krowcy", 404))
+        abort(Response("\nUser not found", 404))
 
 if __name__ == "__main__":
     logging.basicConfig(level = logging.INFO,
