@@ -8,9 +8,6 @@ app = Flask(__name__)
 
 @app.route("/<id_str>", methods=['GET'])
 def get_json_data(id_str):
-    if id_str == "/":
-        return "Hello world"
-
     pages = get_pages(200)
     the_page = find_id(id_str, pages)
     
@@ -46,4 +43,4 @@ def get_json_data(id_str):
 if __name__ == "__main__":
     logging.basicConfig(level = logging.INFO,
                         format = '%(message)s')
-    app.run(host="0.0.0.0", port=80)
+    app.run(host="127.0.0.1", port=5000)
