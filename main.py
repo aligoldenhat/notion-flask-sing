@@ -8,6 +8,9 @@ app = Flask(__name__)
 
 @app.route("/<id_str>", methods=['GET'])
 def get_json_data(id_str):
+    if id_str == "/":
+        return "Hello world"
+
     pages = get_pages(200)
     the_page = find_id(id_str, pages)
     
