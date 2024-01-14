@@ -76,9 +76,14 @@ def reduce_and_try_date(page, succ, id, conf):
     if add_difference:
         if succ:
             reduced_count = page['properties']['count']['number'] - 1
-            updated_count = {'latest_try': {'date': {'start': now}}, 'succ_try': {'checkbox': True}, 'time_difference': {'rich_text': [{'text': {'content': difference}}]}, 'count': {'number': reduced_count}}
+            updated_count = {'latest_try': {'date': {'start': now}},
+                             'succ_try': {'checkbox': True}, 
+                             'time_difference': {'rich_text': [{'text': {'content': difference}}]}, 
+                             'count': {'number': reduced_count}}
         else:
-            updated_count = {'latest_try': {'date': {'start': now}}, 'time_difference': {'rich_text': [{'text': {'content': difference}}]}, 'succ_try': {'checkbox': False}}
+            updated_count = {'latest_try': {'date': {'start': now}},
+                             'time_difference': {'rich_text': [{'text': {'content': difference}}]},
+                             'succ_try': {'checkbox': False}}
     else:
         if succ:
             reduced_count = page['properties']['count']['number'] - 1
