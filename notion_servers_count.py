@@ -36,7 +36,7 @@ def get_pages(num_pages=None):
 def find_id(id, pages):
     for page in pages:
         try:
-            if page['properties']['ID']['rich_text'][0]['plain_text'] == id:
+            if page['properties']['ID']['title'][0]['plain_text'] == id:
                 return page
         except IndexError:
             pass
