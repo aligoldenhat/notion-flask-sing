@@ -26,9 +26,7 @@ def get_page(id):
     data = response.json()
     results = data["results"]
     if results:
-        results = results[0]
-
-    return results
+        return results[0]
 
 def which_conf(page):
     if page:
