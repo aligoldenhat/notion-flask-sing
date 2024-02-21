@@ -17,29 +17,18 @@ headers = {
     "content-type": "application/json"
 }
 
-
-def get_pages(num_pages=None):
+def get_page(id):
     url = f"https://api.notion.com/v1/databases/{DATABASE_ID}/query"
 
-    get_all = num_pages is None
-    page_size = 200 if get_all else num_pages
-
-    payload = {"page_size": page_size}
+    payload = {"filter": {"property": "ID", "rich_text": {"contains": id}}}
     response = requests.post(url, json=payload, headers=headers)
 
     data = response.json()
     results = data["results"]
+    if results:
+        results = results[0]
 
     return results
-
-
-def find_id(id, pages):
-    for page in pages:
-        try:
-            if page['properties']['ID']['title'][0]['plain_text'] == id:
-                return page
-        except IndexError:
-            pass
 
 def which_conf(page):
     if page:

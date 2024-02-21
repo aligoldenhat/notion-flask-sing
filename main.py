@@ -1,5 +1,5 @@
 from flask import Flask, abort, Response
-from notion_servers_count import get_pages, find_id, any_count, reduce_and_try_date, which_conf
+from notion_servers_count import get_page, any_count, reduce_and_try_date, which_conf
 from github_prox import get_config_from_github
 from threading import Thread
 import logging
@@ -8,8 +8,7 @@ app = Flask(__name__)
 
 @app.route("/<id_str>", methods=['GET'])
 def get_json_data(id_str):
-    pages = get_pages(200)
-    the_page = find_id(id_str, pages)
+    the_page = get_page(id_str)
     
     if the_page:
         if any_count(the_page):
@@ -43,4 +42,4 @@ def get_json_data(id_str):
 if __name__ == "__main__":
     logging.basicConfig(level = logging.INFO,
                         format = '%(message)s')
-    app.run(host="0.0.0.0", port=80)
+    app.run(host="127.0.0.1", port=5000)
