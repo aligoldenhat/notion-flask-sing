@@ -20,7 +20,7 @@ headers = {
 def get_page(id):
     url = f"https://api.notion.com/v1/databases/{DATABASE_ID}/query"
 
-    payload = {"filter": {"property": "ID", "rich_text": {"contains": id}}}
+    payload = {"filter": {"property": "ID", "rich_text": {"equals": id}}}
     response = requests.post(url, json=payload, headers=headers)
 
     data = response.json()
