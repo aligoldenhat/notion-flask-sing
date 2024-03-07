@@ -34,8 +34,11 @@ def get_json_data(id_str):
         else:
             thread_add_try_date = Thread(target=reduce_and_try_date, args=(the_page, False, id_str, None))
             thread_add_try_date.start()
-
-            abort(Response("\nYou can use this URL just once.\n\ncontact support: @krowcy", 401))
+     
+            if which_conf(the_page) == "block":
+                abort(Response("\nYour one month subscription is over.\n\ncontact support: @krowcy", 401))
+            else:
+                abort(Response("\nYou can use this URL just once.\n\ncontact support: @krowcy", 401))
     else:
         abort(Response("\nUser not found", 404))
 
